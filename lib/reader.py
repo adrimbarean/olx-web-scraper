@@ -3,22 +3,25 @@ from bs4 import BeautifulSoup
 def html_scraper(page_source):
 
     soup = BeautifulSoup(page_source, 'html.parser')
-    car_listings_ul = soup.find("ul", attrs={"data-aut-id": "itemsList"})
-    listings = car_listings_ul.find_all("li", attrs={"data-aut-id": "itemBox"})
+    car_listings_ul = soup.find("div", attrs={"data-testid": "listing-grid"})
+    listings = car_listings_ul.find_all("div", attrs={"data-cy": "l-card"})
 
     data = []
     for listing in listings:
         ad_link = listing.find("a")["href"]
         ad_id = ad_link.split("-")[-1]
-        ad_title = listing.find("div", attrs={"data-aut-id":"itemTitle"}).string
-        ad_price = listing.find("span", attrs={"data-aut-id":"itemPrice"}).string.split()[1].replace(",", "")
-        kms_year = listing.find("div", attrs={"data-aut-id": "itemSubTitle"}).string.split(" - ")
-        model_year = kms_year[0]
         try:
-            kms_driven = kms_year[1].split()[0].replace(",", "")
-        except IndexError:
-            kms_driven = ""
-        ad_location = listing.find("div", attrs={"data-aut-id":"itemDetails"}).contents[0]
-        data.append([ad_id, ad_price, model_year, kms_driven, ad_title, ad_location, ad_link])
+            ad_title = listing.find("h6", attrs={"class":"css-16v5mdi er34gjf0"}).string
+        except:
+            ad_title = "NOTFOUND!"
+        try:
+            ad_price = listing.find("p", attrs={"data-testid":"ad-price"}).text
+        except:
+            ad_price = "NOTFOUND!"
+        try:
+            ad_size = listing.find("span", attrs={"class":"css-643j0o"}).text
+        except:
+            ad_size = "NOTFOUND!"
+        data.append([ad_title, ad_price, ad_size, ad_link])
     
     return data
