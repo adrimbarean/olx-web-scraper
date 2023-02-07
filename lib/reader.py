@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 def html_scraper(page_source):
 
     soup = BeautifulSoup(page_source, 'html.parser')
-    car_listings_ul = soup.find("div", attrs={"data-testid": "listing-grid"})
-    listings = car_listings_ul.find_all("div", attrs={"data-cy": "l-card"})
+    apt_listings_ul = soup.find("div", attrs={"data-testid": "listing-grid"})
+    listings = apt_listings_ul.find_all("div", attrs={"data-cy": "l-card"})
 
     data = []
     for listing in listings:
