@@ -9,7 +9,6 @@ def html_scraper(page_source):
     data = []
     for listing in listings:
         ad_link = listing.find("a")["href"]
-        ad_id = ad_link.split("-")[-1]
         try:
             ad_title = listing.find("h6", attrs={"class":"css-16v5mdi er34gjf0"}).string
         except:
