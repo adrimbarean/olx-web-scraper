@@ -9,6 +9,8 @@ def html_scraper(page_source):
     data = []
     for listing in listings:
         ad_link = listing.find("a")["href"]
+        if ad_link.find('https://') == -1:
+            ad_link = 'https://www.olx.ro' + ad_link
         try:
             ad_title = listing.find("h6", attrs={"class":"css-16v5mdi er34gjf0"}).string
         except:
